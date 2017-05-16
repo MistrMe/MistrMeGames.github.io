@@ -1,0 +1,77 @@
+<html>
+<head>
+<title> Not Pong</title> 
+<script src="https://simplycodingcourses.com/files/simplyjs/simply.js"></script> 
+<script> 
+
+	function start(){
+		sjs.open("target", 600, 500); 
+		
+		var ball = new sjs.Image("Images/whitesquare.jpg");
+		ball.type = "ball";
+		ball.setSize(32,30);
+		ball.moveTo(50, 400);
+		ball.friction = 0;
+		ball.bounce();
+		ball.pushRight(15);
+		ball.pushUp(10);	
+		//Paddle 1
+		var paddle1 = new sjs.Image("Images/whitesquare2.jpg"); 
+		paddle1.type = "paddle1";
+		paddle1.center().left();
+		paddle1.setSize(20,100);
+
+		var paddle2 = new sjs.Image("Images/whitesquare3.jpg");
+		paddle2.type = "paddle2";
+		paddle2.center().right();
+		paddle2.setSize(20,100);
+
+		var soundEffect = new Audio('Music/techno.mp3');
+		//Score
+		var score = 0;
+		var score2 = 0;
+		var score_txt = new sjs.Text("0 ", 21, "white");
+		var score2_txt = new sjs.Text("0 ", 21, "white");
+		score2_txt.top().right();
+
+		sjs.keyDown(DOWN_KEY, function(){
+			paddle2.pushDown(2.2);
+		}); 
+		sjs.keyDown(UP_KEY, function(){
+			paddle2.pushUp(2.2);
+		}); 
+
+		sjs.keyDown(S_KEY, function(){
+			paddle1.pushDown(2.2);
+		}); 
+		sjs.keyDown(W_KEY, function(){
+			paddle1.pushUp(2.2);
+		}); 
+
+		sjs.onHit("ball","paddle1", function(ball,paddle1){
+		score = score + 1;
+		score_txt.setText(" "+score);
+		soundEffect.play();
+		sjs.bounceOff(ball,paddle1);
+		});
+
+		sjs.onHit("ball","paddle2", function(ball,paddle2){
+		score2 = score2 + 1;
+		score2_txt.setText(" "+score2);
+		soundEffect.play();
+		sjs.bounceOff(ball,paddle2);
+		});
+
+		sjs.onHit("ball",["left_screen","right_screen"], function(){
+		window.location = "gameover.html";
+		});
+
+	}
+</script> 
+</head> 
+
+<body onload="start()">
+<h1> Not Pong</h1> 
+<div id="target" style="margin:auto;background:black;"></div> 
+</body> 
+</html> 
